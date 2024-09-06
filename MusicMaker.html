@@ -22,7 +22,12 @@ let timeSignatures = [{
 	[2, 2, 2, 2, 4, 4],
 	[2, 2, 2, 4, 2, 4],
 	[2, 2, 2, 2, 2, 2, 4],
-  ]
+  ],
+  drumSchemes: {
+    kick: [[1], [1, 2], [1, 3], [1, 1.5, 3, 3.5]],
+	snare: [[3], [2, 4]],
+	highhat: [[1, 2, 3, 4], [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5]]
+  }
 }, {
   signature: "3/4", 
   barLength: 12,
@@ -32,7 +37,12 @@ let timeSignatures = [{
 	[2, 2, 8],
 	[2, 2, 4, 4],
 	[2, 2, 2, 2, 4],
-  ]
+  ],
+  drumSchemes: {
+    kick: [[1], [1, 2], [1, 1.5], [1, 1.5, 2, 2.5]],
+	snare: [[2], [3], [2, 3]],
+	highhat: [[1, 2, 3], [1, 1.5, 2, 2.5, 3, 3.5]]
+  }
 }];
 let notes = ["Bb", "B", "C", "Db", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B", "C", "Db", "D", "Eb", "E", "F", "F#", "G", "Ab", "A"];
 let steps = [[3, 4], [3, 5], [4, 3], [4, 5], [5, 3], [5, 4]];
@@ -82,9 +92,9 @@ for(let j = 0; j < 6; j++) {
 
 console.log("melodys", melodys);
 
-let kick = [[1], [1, 2], [1, 3], [1, 1.5, 3, 3.5]];
-let snare = [[3], [2, 4]];
-let highhat = [[1, 2, 3, 4], [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5]];
+let kick = selectedTimeSignature.drumSchemes.kick;
+let snare = selectedTimeSignature.drumSchemes.snare;
+let highhat = selectedTimeSignature.drumSchemes.highhat;
 
 let selectedKick = kick[Math.floor(Math.random() * kick.length)];
 let selectedSnare = snare[Math.floor(Math.random() * snare.length)];
