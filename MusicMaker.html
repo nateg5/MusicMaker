@@ -54,11 +54,13 @@ let selectedStartNoteIndex = Math.floor(Math.random() * (notes.length / 2));
 let selectedSteps = steps[Math.floor(Math.random() * steps.length)];
 let selectedNotes = [notes[selectedStartNoteIndex], notes[selectedStartNoteIndex + selectedSteps[0]], notes[selectedStartNoteIndex + selectedSteps[0] + selectedSteps[1]]];
 let selectedDirection = directions[Math.floor(Math.random() * directions.length)];
+let shouldSwap = Math.floor(Math.random() * 2);
 
 console.log("selectedTempo", selectedTempo);
 console.log("selectedTimeSignature", selectedTimeSignature);
 console.log("selectedNotes", selectedNotes);
 console.log("selectedDirection", selectedDirection);
+console.log("shouldSwap", shouldSwap);
 
 let melodys = [[], [], [], [], [], []];
 for(let j = 0; j < 6; j++) {
@@ -88,6 +90,11 @@ for(let j = 0; j < 6; j++) {
 	}
 	return 0;
   });
+  if(shouldSwap === 1) {
+	let tempBar = melodys[j][2];
+	melodys[j][2] = melodys[j][3];
+	melodys[j][3] = tempBar;
+  }
 }
 
 console.log("melodys", melodys);
