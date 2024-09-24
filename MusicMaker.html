@@ -8,28 +8,28 @@ let timeSignatures = [{
   signature: "4/4", 
   barLength: 16,
   noteSchemes: [
-    [16],
+    //[16],
 	[14, 2],
 	[12, 4],
 	[12, 2, 2],
 	[10, 6],
 	[10, 2, 4],
 	[10, 2, 2, 2],
-	[8, 8],
+	//[8, 8],
 	[6, 2, 8],
 	[4, 4, 8],
 	[4, 2, 2, 8],
 	[2, 2, 2, 2, 8],
 	[6, 6, 4],
-	[6, 2, 6, 2],
+	//[6, 2, 6, 2],
 	[4, 4, 6, 2],
 	[4, 2, 2, 6, 2],
 	[2, 2, 2, 2, 6, 2],
-	[4, 4, 4, 4],
+	//[4, 4, 4, 4],
 	[4, 2, 2, 4, 4],
-	[4, 2, 2, 4, 2, 2],
+	//[4, 2, 2, 4, 2, 2],
 	[2, 2, 2, 2, 4, 2, 2],
-	[2, 2, 2, 2, 2, 2, 2, 2],
+	//[2, 2, 2, 2, 2, 2, 2, 2],
   ],
   drumSchemes: {
     kick: [[1], [1, 2], [1, 3], [1, 1.5, 3, 3.5]],
@@ -40,17 +40,17 @@ let timeSignatures = [{
   signature: "3/4", 
   barLength: 12,
   noteSchemes: [
-	[12],
+	//[12],
 	[10, 2],
 	[8, 4],
 	[8, 2, 2],
-	[6, 6],
+	//[6, 6],
 	[6, 2, 4],
 	[6, 2, 2, 2],
-	[4, 4, 4],
+	//[4, 4, 4],
 	[4, 2, 2, 4],
 	[2, 2, 2, 2, 4],
-	[2, 2, 2, 2, 2, 2],
+	//[2, 2, 2, 2, 2, 2],
   ],
   drumSchemes: {
     kick: [[1], [1, 2], [1, 1.5], [1, 1.5, 2, 2.5]],
@@ -63,16 +63,33 @@ let steps = [[3, 4], [3, 5], [4, 3], [4, 5], [5, 3], [5, 4]];
 let directions = [[-1, 1], [1, -1]];
 
 let patterns = [
+  [0, 1, 2, 3],
+
   [0, 1, 0, 2],
   [0, 1, 2, 1],
   [0, 0, 1, 2],
   [0, 1, 1, 2],
   [0, 1, 2, 2],
+  
+  [1, 2, 1, 3],
+  [1, 2, 3, 2],
+  [1, 1, 2, 3],
+  [1, 2, 2, 3],
+  [1, 2, 3, 3],
+  
+  [3, 2, 1, 0],
+  
   [2, 1, 2, 0],
   [2, 1, 0, 1],
   [2, 2, 1, 0],
   [2, 1, 1, 0],
   [2, 1, 0, 0],
+  
+  [3, 2, 3, 1],
+  [3, 2, 1, 2],
+  [3, 3, 2, 1],
+  [3, 2, 2, 1],
+  [3, 2, 1, 1],
 ];
 
 let selectedTempo = tempos[Math.floor(Math.random() * tempos.length)];
@@ -95,32 +112,40 @@ let melodys = [[], [], [], [], [], []];
 for(let j = 0; j < 6; j++) {
   let selectedNoteScheme = selectedTimeSignature.noteSchemes[Math.floor(Math.random() * selectedTimeSignature.noteSchemes.length)];
   let bars = [];
-  for(let k = 0; k < 3; k++) {
-    let barArray = [];
-    for(let i = 0; i < selectedNoteScheme.length; i++) {
-      let noteLength = selectedNoteScheme[i];
-	  let note = selectedNotes[Math.floor(Math.random() * selectedNotes.length)];
-      barArray.push({note: note, noteLength: noteLength});
-    }
-	bars.push(barArray);
+  let tryAgain = true;
+  while(tryAgain) {
+      bars = [];
+	  tryAgain = false;
+	  for(let k = 0; k < 4; k++) {
+		let barArray = [];
+		for(let i = 0; i < selectedNoteScheme.length; i++) {
+		  let noteLength = selectedNoteScheme[i];
+		  let note = selectedNotes[Math.floor(Math.random() * selectedNotes.length)];
+		  barArray.push({note: note, noteLength: noteLength});
+		 }
+		bars.push(barArray);
+	  }
+	  bars.sort((a, b) => {
+		let aTotal = 0;
+		let bTotal = 0;
+		for(let i = 0; i < a.length; i++) {
+		  let noteIndex = selectedNotes.indexOf(a[i].note);
+		  let noteLength = a[i].noteLength;
+		  
+		  aTotal += (noteIndex * noteLength);
+		}
+		for(let i = 0; i < b.length; i++) {
+		  let noteIndex = selectedNotes.indexOf(b[i].note);
+		  let noteLength = b[i].noteLength;
+		  
+		  bTotal += (noteIndex * noteLength);
+		}
+		if(aTotal <= bTotal) {
+		  tryAgain = true;
+		}
+		return aTotal - bTotal;
+	  });
   }
-  bars.sort((a, b) => {
-    let aTotal = 0;
-	let bTotal = 0;
-	for(let i = 0; i < a.length; i++) {
-	  let noteIndex = selectedNotes.indexOf(a[i].note);
-	  let noteLength = a[i].noteLength;
-	  
-	  aTotal += (noteIndex * noteLength);
-	}
-	for(let i = 0; i < b.length; i++) {
-	  let noteIndex = selectedNotes.indexOf(b[i].note);
-	  let noteLength = b[i].noteLength;
-	  
-	  bTotal += (noteIndex * noteLength);
-	}
-	return aTotal - bTotal;
-  });
   for(let k = 0; k < selectedPattern.length; k++) {
     melodys[j].push(bars[selectedPattern[k]]);
   }
